@@ -34,6 +34,7 @@
 -- MAGIC spark.sql("CREATE DATABASE IF NOT EXISTS delta_{}_db".format(str(databricks_user)))
 -- MAGIC spark.sql("USE delta_{}_db".format(str(databricks_user)))
 -- MAGIC print("데이터베이스명 : delta_{}_db".format((databricks_user)))
+-- MAGIC #테스트
 
 -- COMMAND ----------
 
