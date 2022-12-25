@@ -16,7 +16,7 @@
 
 # MAGIC %md 
 # MAGIC ## 1. Multi Language Support with Magic Command!  
-# MAGIC 매직컴맨드 **%** 를 사용해서 하나의 노트북에서 다양한 언어를 사용해서 코딩할 수 있습니다. 
+# MAGIC 매직커맨드 **%** 를 사용해서 하나의 노트북에서 다양한 언어를 사용해서 코딩할 수 있습니다. 
 # MAGIC 
 # MAGIC * **&percnt;python** 
 # MAGIC * **&percnt;scala** 
@@ -79,7 +79,7 @@ print(databricks_user)
 # MAGIC Databrick utilites (e.g. `dbutils`) 은 notebook에서 유용하게 사용할 수 있는 다양한 기능을 제공합니다: 
 # MAGIC https://docs.databricks.com/dev-tools/databricks-utils.html
 # MAGIC 
-# MAGIC 그중 하나인 **"Widgets"** 기능은 노트북에서 동적인 변수처리를 손쉽게 할 수 있도록 도와줍니다:https://docs.databricks.com/notebooks/widgets.ht
+# MAGIC 그중 하나인 **"Widgets"** 기능은 노트북에서 동적인 변수처리를 손쉽게 할 수 있도록 도와줍니다: https://docs.databricks.com/notebooks/widgets.html
 
 # COMMAND ----------
 
@@ -88,7 +88,7 @@ dbutils.widgets.removeAll()
 
 # COMMAND ----------
 
-dbutils.widgets.dropdown("dropdown_widget", "1", [str(x) for x in range(1, 4)])
+dbutils.widgets.dropdown("dropdown_widget", "2022", [str(x) for x in range(2020, 2023)])
 
 # COMMAND ----------
 
@@ -115,10 +115,6 @@ print(dbutils.widgets.get("text_widget"))
 # MAGIC ### Magic Command: &percnt;fs
 # MAGIC **&percnt;fs** 매직커맨드는 `dbutils.fs` 에 대한 wrapper 로  ,`dbutils.fs.ls("/databricks-datasets")` 와 `%fs ls /databricks-datasets`는 똑같이 동작합니다.  
 # MAGIC 이 노트북에서는 설치시에 기본으로 제공되는 /databricks-datasets 상의 데이터를 사용해 보도록 하겠습니다. 
-
-# COMMAND ----------
-
-
 
 # COMMAND ----------
 
@@ -186,12 +182,14 @@ display(diamondsDF.select("color","price").groupBy("color").agg(avg("price")).so
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 이상으로 간단한 노트북 사용법을 살펴 보았습니다. Databricks 노트북 사용법에 대한 상세한 내용은 아래 문서를 참조하세요:
+# MAGIC https://docs.databricks.com/notebooks/index.html
+
+# COMMAND ----------
+
 # MAGIC %md-sandbox
 # MAGIC &copy; 2021 Databricks, Inc. All rights reserved.<br/>
 # MAGIC Apache, Apache Spark, Spark and the Spark logo are trademarks of the <a href="http://www.apache.org/">Apache Software Foundation</a>.<br/>
 # MAGIC <br/>
 # MAGIC <a href="https://databricks.com/privacy-policy">Privacy Policy</a> | <a href="https://databricks.com/terms-of-use">Terms of Use</a> | <a href="http://help.databricks.com/">Support</a>
-
-# COMMAND ----------
-
-
