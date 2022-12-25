@@ -6,10 +6,10 @@
 -- MAGIC 
 -- MAGIC 
 -- MAGIC * Delta Table 생성  
--- MAGIC * Update/Delete/Merge 등 다양한 DML문들을 사용해서 데이터를 수정하고 정제
+-- MAGIC * Update/Delete/Merge 등 다양한 DML문으로 데이터를 수정/정제
 -- MAGIC * Delta Table의 구조 이해
 -- MAGIC * Time Travel 을 이용한 Table History 관리   
--- MAGIC * 댜양한 IO 최적화 기능 
+-- MAGIC * 다양한 IO 최적화 기능 
 
 -- COMMAND ----------
 
@@ -92,7 +92,7 @@ SELECT * FROM updates;
 -- MAGIC 이 명령어를 각각 수행한다면 3개의 트렌젝션이 되고 만일 이중에 하나라도 실패하게 된다면 invalid한 상태가 될 수 있습니다.  
 -- MAGIC 대신에 이 3가지 action을 하나의 atomic 트렌젝션으로 묶어서 한꺼번에 적용되도록 합니다.  
 -- MAGIC <br>
--- MAGIC **`MERGE`**  문은 최소한 한 하나의 기준 field (여기서는 id)를 가지고 각 **`WHEN MATCHED`** 이나 **`WHEN NOT MATCHED`**  구절은 여러 조건값들을 가질 수 있습니다.  
+-- MAGIC **`MERGE`**  문은 최소한 하나의 기준 field (여기서는 id)를 가지고 각 **`WHEN MATCHED`** 이나 **`WHEN NOT MATCHED`**  구절은 여러 조건값들을 가질 수 있습니다.  
 -- MAGIC **id** 필드를 기준으로 **type** 필드값에 따라서 각 record에 대해서 update,delete,insert문을 수행하게 됩니다. 
 
 -- COMMAND ----------
@@ -124,7 +124,7 @@ DESCRIBE EXTENDED students
 
 -- COMMAND ----------
 
--- DBTITLE 1,Delta Lake File 을 조사해 보자.
+-- DBTITLE 1,Delta Lake File 을 조사해 봅시다
 -- MAGIC %python
 -- MAGIC display(dbutils.fs.ls(f"/user/hive/warehouse/delta_{databricks_user}_db.db/students"))
 
@@ -141,6 +141,38 @@ DESCRIBE EXTENDED students
 -- COMMAND ----------
 
 -- MAGIC %md 
+-- MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Schema Enforcement & Evolution
+-- MAGIC 
+-- MAGIC 
+-- MAGIC Schema enforcement는 데이터 품질을 보장하기 위한 Delta Lake의 보호 장치입니다. Delta Lake는 쓰기 작업시 스키마 유효성 검사를 하여, 스키마가 호환되지 않는 경우 Delta Lake는 트랜잭션을 완전히 취소하고(데이터가 기록되지 않음) 예외를 발생시켜 사용자에게 불일치에 대해서 알려줍니다.
+-- MAGIC 
+-- MAGIC Schema evolution 은 시간이 지남에 따라 변화하는 데이터를 수용하기 위해 사용자가 테이블의 현재 스키마를 쉽게 변경할 수 있는 기능입니다. 가장 일반적인 사례는 하나 이상의 새 컬럼을 포함하도록 스키마를 자동 조정하기 위해 추가 및 덮어쓰기 작업을 수행할 때 사용합니다.
+
+-- COMMAND ----------
+
+-- 3개의 컬럼을 갖는 테이블에 4개의 컬럼을 가진 입력을 시도해 봅시다.   
+-- INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
+
+-- COMMAND ----------
+
+-- 아래 옵션으로 Schema evolution 을 설정한 다음, 다시 입력을 시도해 봅시다.
+
+-- SET spark.databricks.delta.schema.autoMerge.enabled = true;
+
+-- INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
+
+-- COMMAND ----------
+
+SELECT * FROM students;
+
+-- COMMAND ----------
+
+-- 잘못된 데이터로 인해 의도하지 않게 스키마가 변경되는 것을 방지하기 위해      
+SET spark.databricks.delta.schema.autoMerge.enabled = false;
+
+-- COMMAND ----------
+
+-- MAGIC %md 
 -- MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Table History를 사용한 Time Travel 기능 
 
 -- COMMAND ----------
@@ -150,14 +182,18 @@ DESCRIBE HISTORY students
 -- COMMAND ----------
 
 -- DBTITLE 1,과거 버전의 데이터 조회
-SELECT * FROM students VERSION AS OF 2;
--- SELECT * FROM students@v2;
+SELECT * FROM students VERSION AS OF 7;
+-- SELECT * FROM students@v7;
 -- SELECT * FROM students TIMESTAMP AS OF '2022-12-25 06:37:00';
 
 -- COMMAND ----------
 
 -- DBTITLE 1,과거 버전으로 돌아가기
---RESTORE TABLE students TO VERSION AS OF 2;
+-- RESTORE TABLE students TO VERSION AS OF 7;
+
+-- COMMAND ----------
+
+SELECT * FROM students
 
 -- COMMAND ----------
 
@@ -190,9 +226,9 @@ DESCRIBE HISTORY students
 
 -- MAGIC %md
 -- MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Stale File 정리하기
--- MAGIC Databricks는 자동으로 Delta Lake Table 에서 불필요한 파일들을 정리합니다.  
--- MAGIC Delta Lake의 Versioning과 Time Travel은 과거 버전을 조회하고 실수했을 경우 데이터를 rollback하는 매우 유용한 기능이지만, 데이터 파일의 모든 버전을 영구적으로 저장하는 것은 비용이 많이 들게 됩니다.  
--- MAGIC 기본값으로 **VACUUM** 은 7일 미만의 데이터를 삭제하지 못하도록 합니다. 아래의 예제는 이 기본 설정을 무시하고 가장 최근 버전 데이터만 남기고 모든 과거 버전의 stale file을 정리하는 예제입니다. 
+-- MAGIC 
+-- MAGIC Delta Lake의 Versioning과 Time Travel은 과거 버전을 조회하고 실수했을 경우 데이터를 rollback하는 매우 유용한 기능이지만, 데이터 파일의 모든 버전을 영구적으로 저장하는 것은 스토리지 비용이 많이 들게 됩니다. Vacuum 을 이용하여 Delta Lake Table 에서 불필요한 데이터 파일들을 정리할 수 있습니다.    
+-- MAGIC 기본값으로 **VACUUM** 은 7일 미만의 데이터를 삭제하지 못하도록 설정되어 있으며, 이는 아직 사용중이거나 커밋되지 않은 파일이 삭제되어 데이터가 손상되는 것을 방지하기 위함입니다. 아래의 예제는 이 기본 설정을 무시하고 가장 최근 버전 데이터만 남기고 모든 과거 버전의 stale file을 정리하는 예제입니다. 
 
 -- COMMAND ----------
 
@@ -218,7 +254,3 @@ drop table students;
 -- MAGIC Apache, Apache Spark, Spark and the Spark logo are trademarks of the <a href="https://www.apache.org/">Apache Software Foundation</a>.<br/>
 -- MAGIC <br/>
 -- MAGIC <a href="https://databricks.com/privacy-policy">Privacy Policy</a> | <a href="https://databricks.com/terms-of-use">Terms of Use</a> | <a href="https://help.databricks.com/">Support</a>
-
--- COMMAND ----------
-
-

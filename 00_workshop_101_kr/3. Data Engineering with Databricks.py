@@ -322,7 +322,7 @@ DA.data_factory.load(continuous=True)
 # MAGIC 
 # MAGIC ## Wrapping Up
 # MAGIC 
-# MAGIC 마지막으로 모든 스트림이 멈췄는지 확인하고 데이터를 정리하자.
+# MAGIC 마지막으로 모든 스트림이 멈췄는지 확인하고 데이터를 정리합니다
 
 # COMMAND ----------
 
