@@ -5,7 +5,8 @@
 -- MAGIC 이 노트북에서는 SparkSQL 을 사용해서 아래와 같이 Delta Lake 형식의 데이터를 다루는 다양한 방법에 대해서 다룹니다.  
 -- MAGIC 
 -- MAGIC 
--- MAGIC * Delta Table을 만들고 다양한 DML문들을 사용해서 데이터를 수정하고 정제
+-- MAGIC * Delta Table 생성  
+-- MAGIC * Update/Delete/Merge 등 다양한 DML문들을 사용해서 데이터를 수정하고 정제
 -- MAGIC * Delta Table의 구조 이해
 -- MAGIC * Time Travel 을 이용한 Table History 관리   
 -- MAGIC * 댜양한 IO 최적화 기능 
@@ -20,10 +21,6 @@
 -- MAGIC spark.sql("DROP DATABASE IF EXISTS delta_{}_db CASCADE".format(str(databricks_user)))
 -- MAGIC spark.sql("CREATE DATABASE IF NOT EXISTS delta_{}_db".format(str(databricks_user)))
 -- MAGIC spark.sql("USE delta_{}_db".format(str(databricks_user)))
-
--- COMMAND ----------
-
-pip install mlflow 
 
 -- COMMAND ----------
 
@@ -54,6 +51,10 @@ VALUES
   (5, "Tiffany", 5.5),
   (6, "Vini", 6.3);
   
+
+-- COMMAND ----------
+
+SELECT * FROM students ORDER BY id
 
 -- COMMAND ----------
 
@@ -149,8 +150,9 @@ DESCRIBE HISTORY students
 -- COMMAND ----------
 
 -- DBTITLE 1,과거 버전의 데이터 조회
---SELECT * FROM students VERSION AS OF 2;
- SELECT * FROM students@v2;
+SELECT * FROM students VERSION AS OF 2;
+-- SELECT * FROM students@v2;
+-- SELECT * FROM students TIMESTAMP AS OF '2022-12-25 06:37:00';
 
 -- COMMAND ----------
 
