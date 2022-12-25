@@ -34,7 +34,7 @@ SELECT * FROM task_3
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC mytaskValue = "사람을 아름답게, 세상을 아름답게(We Make A MORE Beautiful World)"
+-- MAGIC mytaskValue = "We make better world!"
 -- MAGIC dbutils.jobs.taskValues.set(
 -- MAGIC   key = "aboutus"
 -- MAGIC   ,value = mytaskValue
