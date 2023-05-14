@@ -5,7 +5,6 @@ import pandas as pd
 df= pd.read_csv("0.sample/people.csv")
 display(df)
 
-
 # COMMAND ----------
 
 # DBTITLE 1,pyspark
@@ -18,7 +17,7 @@ display(df)
 
 # MAGIC %md
 # MAGIC ### Limitation
-# MAGIC 
+# MAGIC
 # MAGIC You cannot programmatically write to a file.
 
 # COMMAND ----------
