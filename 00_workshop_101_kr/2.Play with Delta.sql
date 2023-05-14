@@ -3,8 +3,8 @@
 -- MAGIC # ![](https://redislabs.com/wp-content/uploads/2016/12/lgo-partners-databricks-125x125.png)  Delta Lake Quickstart  
 -- MAGIC <br>
 -- MAGIC 이 노트북에서는 SparkSQL 을 사용해서 아래와 같이 Delta Lake 형식의 데이터를 다루는 다양한 방법에 대해서 다룹니다.  
--- MAGIC 
--- MAGIC 
+-- MAGIC
+-- MAGIC
 -- MAGIC * Delta Table 생성  
 -- MAGIC * Update/Delete/Merge 등 다양한 DML문으로 데이터를 수정/정제
 -- MAGIC * Delta Table의 구조 이해
@@ -17,7 +17,7 @@
 -- MAGIC %python
 -- MAGIC databricks_user = spark.sql("SELECT current_user()").collect()[0][0].split('@')[0].replace(".", "_")
 -- MAGIC print(databricks_user)
--- MAGIC 
+-- MAGIC
 -- MAGIC spark.sql("DROP DATABASE IF EXISTS delta_{}_db CASCADE".format(str(databricks_user)))
 -- MAGIC spark.sql("CREATE DATABASE IF NOT EXISTS delta_{}_db".format(str(databricks_user)))
 -- MAGIC spark.sql("USE delta_{}_db".format(str(databricks_user)))
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS students
 -- MAGIC ##![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Full DML Support
 -- MAGIC <br>
 -- MAGIC 일반적인 Data Lake의 경우 모든 데이터는 Append Only임을 가정합니다.  
--- MAGIC 
+-- MAGIC
 -- MAGIC Delta Lake를 사용하면 마치 Database를 사용하는 것처럼 Insert,Update,Delete를 사용해서 손쉽게 데이터셋을 수정할 수 있습니다. 
 
 -- COMMAND ----------
@@ -71,7 +71,7 @@ WHERE value > 6
 
 -- MAGIC %md 
 -- MAGIC ### ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) MERGE 를 사용한 Upsert 수행 
--- MAGIC 
+-- MAGIC
 -- MAGIC Databricks에서는 MERGE문을 사용해서 Upsert- 데이터의 Update,Insert 및 기타 데이터 조작을 하나의 명령어로 수행합니다.  
 -- MAGIC 아래의 예제는 변경사항을 기록하는 CDC(Change Data Capture) 로그데이터를 updates라는 임시뷰로 생성합니다. 
 
@@ -142,16 +142,16 @@ DESCRIBE EXTENDED students
 
 -- MAGIC %md 
 -- MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Schema Enforcement & Evolution
--- MAGIC 
--- MAGIC 
+-- MAGIC
+-- MAGIC
 -- MAGIC Schema enforcement는 데이터 품질을 보장하기 위한 Delta Lake의 보호 장치입니다. Delta Lake는 쓰기 작업시 스키마 유효성 검사를 하여, 스키마가 호환되지 않는 경우 Delta Lake는 트랜잭션을 완전히 취소하고(데이터가 기록되지 않음) 예외를 발생시켜 사용자에게 불일치에 대해서 알려줍니다.
--- MAGIC 
+-- MAGIC
 -- MAGIC Schema evolution 은 시간이 지남에 따라 변화하는 데이터를 수용하기 위해 사용자가 테이블의 현재 스키마를 쉽게 변경할 수 있는 기능입니다. 가장 일반적인 사례는 하나 이상의 새 컬럼을 포함하도록 스키마를 자동 조정하기 위해 추가 및 덮어쓰기 작업을 수행할 때 사용합니다.
 
 -- COMMAND ----------
 
 -- 3개의 컬럼을 갖는 테이블에 4개의 컬럼을 가진 입력을 시도해 봅시다.   
--- INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
+INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
 
 -- COMMAND ----------
 
@@ -199,7 +199,7 @@ SELECT * FROM students
 
 -- MAGIC %md 
 -- MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Delta Data file에 대한 최적화 
--- MAGIC 
+-- MAGIC
 -- MAGIC 이런저런 작업을 하다 보면 필연적으로 굉장히 작은 데이터 파일들이 많이 생성되게 됩니다.  
 -- MAGIC 성능 향상을 위해서 이런 파일들에 대한 최적화하는 방법과 불필요한 파일들을 정리하는 명령어들에 대해서 알아봅시다. 
 
@@ -226,7 +226,7 @@ DESCRIBE HISTORY students
 
 -- MAGIC %md
 -- MAGIC ## ![](https://pages.databricks.com/rs/094-YMS-629/images/delta-lake-tiny-logo.png) Stale File 정리하기
--- MAGIC 
+-- MAGIC
 -- MAGIC Delta Lake의 Versioning과 Time Travel은 과거 버전을 조회하고 실수했을 경우 데이터를 rollback하는 매우 유용한 기능이지만, 데이터 파일의 모든 버전을 영구적으로 저장하는 것은 스토리지 비용이 많이 들게 됩니다. Vacuum 을 이용하여 Delta Lake Table 에서 불필요한 데이터 파일들을 정리할 수 있습니다.    
 -- MAGIC 기본값으로 **VACUUM** 은 7일 미만의 데이터를 삭제하지 못하도록 설정되어 있으며, 이는 아직 사용중이거나 커밋되지 않은 파일이 삭제되어 데이터가 손상되는 것을 방지하기 위함입니다. 아래의 예제는 이 기본 설정을 무시하고 가장 최근 버전 데이터만 남기고 모든 과거 버전의 stale file을 정리하는 예제입니다. 
 
