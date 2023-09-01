@@ -54,7 +54,7 @@ VALUES
 
 -- COMMAND ----------
 
-SELECT * FROM students ORDER BY id
+SELECT * FROM students 
 
 -- COMMAND ----------
 
@@ -83,14 +83,14 @@ CREATE OR REPLACE TEMP VIEW updates(id, name, value, type) AS VALUES
   (7, "Blue", 7.7, "insert"),
   (11, "Diya", 8.8, "update");
   
-SELECT * FROM updates;
+SELECT * FROM updates ORDER BY id;
 
 -- COMMAND ----------
 
 -- MAGIC %md 
 -- MAGIC 이 view에는 레코드들에 대한 3가지 타입- insert,update,delete 명령어 기록을 담고 있습니다.  
--- MAGIC 이 명령어를 각각 수행한다면 3개의 트렌젝션이 되고 만일 이중에 하나라도 실패하게 된다면 invalid한 상태가 될 수 있습니다.  
--- MAGIC 대신에 이 3가지 action을 하나의 atomic 트렌젝션으로 묶어서 한꺼번에 적용되도록 합니다.  
+-- MAGIC 이 명령어를 각각 수행한다면 3개의 트랜젝션이 되고 만일 이중에 하나라도 실패하게 된다면 invalid한 상태가 될 수 있습니다.  
+-- MAGIC 대신에 이 3가지 action을 하나의 atomic 트랜젝션으로 묶어서 한꺼번에 적용되도록 합니다.  
 -- MAGIC <br>
 -- MAGIC **`MERGE`**  문은 최소한 하나의 기준 field (여기서는 id)를 가지고 각 **`WHEN MATCHED`** 이나 **`WHEN NOT MATCHED`**  구절은 여러 조건값들을 가질 수 있습니다.  
 -- MAGIC **id** 필드를 기준으로 **type** 필드값에 따라서 각 record에 대해서 update,delete,insert문을 수행하게 됩니다. 
@@ -109,7 +109,7 @@ WHEN NOT MATCHED AND u.type = "insert"
 
 -- COMMAND ----------
 
-SELECT * FROM students;
+SELECT * FROM students ORDER BY id;
 
 -- COMMAND ----------
 
@@ -157,13 +157,13 @@ INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
 
 -- 아래 옵션으로 Schema evolution 을 설정한 다음, 다시 입력을 시도해 봅시다.
 
--- SET spark.databricks.delta.schema.autoMerge.enabled = true;
+SET spark.databricks.delta.schema.autoMerge.enabled = true;
 
--- INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
+INSERT INTO students VALUES (11, "Tom", 4.0, "XYZ");
 
 -- COMMAND ----------
 
-SELECT * FROM students;
+SELECT * FROM students ORDER BY id;
 
 -- COMMAND ----------
 
@@ -182,18 +182,18 @@ DESCRIBE HISTORY students
 -- COMMAND ----------
 
 -- DBTITLE 1,과거 버전의 데이터 조회
-SELECT * FROM students VERSION AS OF 7;
+SELECT * FROM students VERSION AS OF 7 ORDER BY id;
 -- SELECT * FROM students@v7;
 -- SELECT * FROM students TIMESTAMP AS OF '2022-12-25 06:37:00';
 
 -- COMMAND ----------
 
 -- DBTITLE 1,과거 버전으로 돌아가기
--- RESTORE TABLE students TO VERSION AS OF 7;
+RESTORE TABLE students TO VERSION AS OF 7;
 
 -- COMMAND ----------
 
-SELECT * FROM students
+SELECT * FROM students ORDER BY id
 
 -- COMMAND ----------
 

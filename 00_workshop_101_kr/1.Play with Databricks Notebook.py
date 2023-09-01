@@ -6,6 +6,11 @@
 # MAGIC     
 # MAGIC <br>     
 # MAGIC   
+<<<<<<< Updated upstream
+=======
+# MAGIC <br>  
+# MAGIC   
+>>>>>>> Stashed changes
 # MAGIC
 # MAGIC <img width="1098" alt="image" src="https://user-images.githubusercontent.com/91228557/168506128-ce86ce8c-5ec3-4a8c-8157-3102a26a37d5.png">
 # MAGIC
@@ -150,7 +155,6 @@ diamondsDF = spark.read.format("csv")\
 from pyspark.sql.functions import avg
 # groupBy 를 사용해서 color별 평균 가격을 구해보자
 display(diamondsDF.select("color","price").groupBy("color").agg(avg("price")).sort("color"))
-
 
 # COMMAND ----------
 
