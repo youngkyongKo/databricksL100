@@ -1,0 +1,88 @@
+[0m14:59:16.489974 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1059f65b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1141ad9d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1141adbb0>]}
+
+
+============================== 14:59:16.492619 | c6514f30-e6d2-4111-a31e-b97ea885ae7e ==============================
+[0m14:59:16.492619 [info ] [MainThread]: Running with dbt=1.6.3
+[0m14:59:16.492929 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'fail_fast': 'False', 'log_path': 'logs', 'profiles_dir': '/Users/yk.ko/.dbt', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'invocation_command': 'dbt init demo_dbt', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m14:59:16.493724 [debug] [MainThread]: Starter project path: /Users/yk.ko/Library/Python/3.9/lib/python/site-packages/dbt/include/starter_project
+[0m14:59:16.504919 [info ] [MainThread]: 
+Your new dbt project "demo_dbt" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m14:59:16.505206 [info ] [MainThread]: Setting up your profile.
+[0m15:00:17.151226 [info ] [MainThread]: Profile demo_dbt written to /Users/yk.ko/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m15:00:17.152078 [debug] [MainThread]: Command `dbt init` succeeded at 15:00:17.151780 after 60.68 seconds
+[0m15:00:17.152537 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1059f65b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x112e02be0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1689dfb80>]}
+[0m15:00:17.152840 [debug] [MainThread]: Flushing usage events
+[0m15:13:01.873036 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x101626a90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10472d880>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1047600d0>]}
+
+
+============================== 15:13:01.875395 | a31bdbc6-ef6f-4115-a831-f94afed18caf ==============================
+[0m15:13:01.875395 [info ] [MainThread]: Running with dbt=1.6.3
+[0m15:13:01.875715 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/yk.ko/.dbt', 'debug': 'False', 'fail_fast': 'False', 'log_path': 'logs', 'version_check': 'True', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'log_format': 'default', 'invocation_command': 'dbt debug', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m15:13:01.876034 [info ] [MainThread]: dbt version: 1.6.3
+[0m15:13:01.876189 [info ] [MainThread]: python version: 3.9.6
+[0m15:13:01.876338 [info ] [MainThread]: python path: /Library/Developer/CommandLineTools/usr/bin/python3
+[0m15:13:01.876525 [info ] [MainThread]: os info: macOS-13.5.1-arm64-arm-64bit
+[0m15:13:02.616317 [info ] [MainThread]: Using profiles dir at /Users/yk.ko/.dbt
+[0m15:13:02.616620 [info ] [MainThread]: Using profiles.yml file at /Users/yk.ko/.dbt/profiles.yml
+[0m15:13:02.616779 [info ] [MainThread]: Using dbt_project.yml file at /Users/yk.ko/git/databricksL100/demo_dbt/dbt_project.yml
+[0m15:13:02.616949 [info ] [MainThread]: adapter type: databricks
+[0m15:13:02.617092 [info ] [MainThread]: adapter version: 1.6.4
+[0m15:13:02.617244 [info ] [MainThread]: Configuration:
+[0m15:13:02.617390 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:13:02.617533 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m15:13:02.617672 [info ] [MainThread]: Required dependencies:
+[0m15:13:02.618013 [debug] [MainThread]: Executing "git --help"
+[0m15:13:02.639167 [debug] [MainThread]: STDOUT: "b"usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--config-env=<name>=<envvar>] <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:13:02.639971 [debug] [MainThread]: STDERR: "b''"
+[0m15:13:02.640206 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:13:02.640387 [info ] [MainThread]: Connection:
+[0m15:13:02.640622 [info ] [MainThread]:   host: e2-demo-field-eng.cloud.databricks.com
+[0m15:13:02.640776 [info ] [MainThread]:   http_path: /sql/1.0/warehouses/475b94ddc7cd5211
+[0m15:13:02.640919 [info ] [MainThread]:   catalog: demo_ykko
+[0m15:13:02.641067 [info ] [MainThread]:   schema: mycustom_myschema
+[0m15:13:02.641393 [info ] [MainThread]: Registered adapter: databricks=1.6.4
+[0m15:13:02.646710 [debug] [MainThread]: Acquiring new databricks connection 'debug'
+[0m15:13:02.648121 [debug] [MainThread]: Using databricks connection "debug"
+[0m15:13:02.648318 [debug] [MainThread]: On debug: select 1 as id
+[0m15:13:02.648515 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:13:03.640007 [debug] [MainThread]: Databricks adapter: <class 'databricks.sql.exc.RequestError'>: Error during request to server: : Invalid access token.
+[0m15:13:03.640447 [debug] [MainThread]: Databricks adapter: attempt: 1/30
+[0m15:13:03.640606 [debug] [MainThread]: Databricks adapter: bounded-retry-delay: None
+[0m15:13:03.640749 [debug] [MainThread]: Databricks adapter: elapsed-seconds: 0.9793860912322998/900.0
+[0m15:13:03.640887 [debug] [MainThread]: Databricks adapter: error-message: : Invalid access token.
+[0m15:13:03.641020 [debug] [MainThread]: Databricks adapter: http-code: 403
+[0m15:13:03.641154 [debug] [MainThread]: Databricks adapter: method: OpenSession
+[0m15:13:03.641295 [debug] [MainThread]: Databricks adapter: no-retry-reason: non-retryable error
+[0m15:13:03.641427 [debug] [MainThread]: Databricks adapter: original-exception: 
+[0m15:13:03.641558 [debug] [MainThread]: Databricks adapter: query-id: None
+[0m15:13:03.641689 [debug] [MainThread]: Databricks adapter: session-id: None
+[0m15:13:03.641887 [debug] [MainThread]: Databricks adapter: Error while running:
+select 1 as id
+[0m15:13:03.642031 [debug] [MainThread]: Databricks adapter: Database Error
+  Error during request to server: : Invalid access token.
+[0m15:13:03.642267 [debug] [MainThread]: On debug: No close available on handle
+[0m15:13:03.642450 [info ] [MainThread]:   Connection test: [[31mERROR[0m]
+
+[0m15:13:03.642620 [info ] [MainThread]: [31m1 check failed:[0m
+[0m15:13:03.642771 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </Users/yk.ko/git/databricksL100/demo_dbt/dbt_project.yml> not found
+
+[0m15:13:03.643294 [debug] [MainThread]: Command `dbt debug` failed at 15:13:03.643183 after 1.79 seconds
+[0m15:13:03.643543 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:13:03.643767 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x101626a90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x13cc06a30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x13cc27490>]}
+[0m15:13:03.644030 [debug] [MainThread]: Flushing usage events
