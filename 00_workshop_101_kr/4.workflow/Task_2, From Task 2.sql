@@ -39,3 +39,11 @@ SELECT * FROM task_3
 -- MAGIC   key = "aboutus"
 -- MAGIC   ,value = mytaskValue
 -- MAGIC )
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC # job-level parameter test
+-- MAGIC dbutils.widgets.text("year", "2014")
+-- MAGIC myYear = getArgument("year")
+-- MAGIC display(spark.sql(f"SELECT '{myYear}', current_timestamp()"))

@@ -39,3 +39,11 @@ SELECT COUNT(*) FROM task_1
 
 SELECT * FROM task_1
 
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC # job-level parameter test
+-- MAGIC dbutils.widgets.text("year", "2014")
+-- MAGIC myYear = getArgument("year")
+-- MAGIC display(spark.sql(f"SELECT '{myYear}', current_timestamp()"))
