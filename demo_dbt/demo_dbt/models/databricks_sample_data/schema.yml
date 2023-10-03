@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: databricks_sample_data
+    description: 'test in uc schema' 
+    database: demo_ykko
+    schema: mycustom_myschema
+    tables:
+      - name: mytable1  
+        description: 'my table #1'
