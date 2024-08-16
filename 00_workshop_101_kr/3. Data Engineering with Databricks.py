@@ -2,44 +2,44 @@
 # MAGIC %md
 # MAGIC # ![](https://redislabs.com/wp-content/uploads/2016/12/lgo-partners-databricks-125x125.png)  Data Engineering with Databricks 
 # MAGIC <br>
-# MAGIC 
+# MAGIC
 # MAGIC # Incremental Multi-Hop in the Lakehouse
-# MAGIC 
+# MAGIC
 # MAGIC 이 노트북에서는 Spark Structured Streaming 과 Delta Lake를 사용해서 통합된 Multi Hop 파이프라인에서 손쉽게 streaming 과 batch workload를 합치는 방법에 대해서 다룹니다. 
-# MAGIC 
+# MAGIC
 # MAGIC ![](https://files.training.databricks.com/images/sslh/multi-hop-simple.png)
-# MAGIC 
+# MAGIC
 # MAGIC 파이프라인의 각 Bronze,Silver,Gold 데이터 단계별로 프로세싱되는 과정을 거치면서 가장 최신의 데이터를 준실시간성(near-real time)으로 처리해서 분석가에게 제공되게 됩니다.
-# MAGIC 
+# MAGIC
 # MAGIC <br>
-# MAGIC 
+# MAGIC
 # MAGIC - **Bronze** 테이블은 다양한 소스((JSON files, RDBMS data,  IoT data등)에서 수집한 원본 데이터를 저장합니다. 
-# MAGIC 
+# MAGIC
 # MAGIC - **Silver** 테이블은 우리 데이터에 좀더 정제된 view를 제공합니다. 다양한 bronze 테이블과 조인하거나 불필요한 정보의 제거, 업데이트등을 수행합니다. 
-# MAGIC 
+# MAGIC
 # MAGIC - **Gold** 테이블은 주로 리포트나 대시보드에서 사용되는 비지니스 수준의 aggregation을 수행한 뷰를 제공합니다.  일간사용자수나 상품별 매출등의 뷰가 이 예입니다. 
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Datasets Used
-# MAGIC 
+# MAGIC
 # MAGIC 이 예제에서는 의학기기에서 발생하는 센서데이터와 환자개인정보(PII) 2가지의 데이터셋을 사용합니다. 
 # MAGIC #### Recordings
 # MAGIC JSON형태의 센서데이터 스키마 정보는 다음과 같습니다. 
-# MAGIC 
+# MAGIC
 # MAGIC | Field | Type |
 # MAGIC | --- | --- |
 # MAGIC | device_id | int |
 # MAGIC | mrn | long |
 # MAGIC | time | double |
 # MAGIC | heartrate | double |
-# MAGIC 
+# MAGIC
 # MAGIC #### PII
 # MAGIC 이 데이터는 외부시스템에서 가져온 환자이름으로 구분되는 환자정보 테이블로 위의 데이터셋과 조인해서 사용할 것입니다. 
-# MAGIC 
+# MAGIC
 # MAGIC | Field | Type |
 # MAGIC | --- | --- |
 # MAGIC | mrn | long |
@@ -61,19 +61,18 @@ currentUser = spark.sql("SELECT current_user()").collect()[0][0]
 
 # COMMAND ----------
 
-# MAGIC %python
-# MAGIC display(dbutils.fs.ls(f"/user/{currentUser}/dbacademy/dewd/7.1/source/tracker/"))
+display(dbutils.fs.ls(f"/user/{currentUser}/dbacademy/dewd/7.1/source/tracker/"))
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Bronze Table: Ingesting Raw JSON Recordings
-# MAGIC 
+# MAGIC
 # MAGIC 아래의 코드는 위 경로에 적재된 JSON파일을 autoloader를 사용해서 읽는 예제입니다. 
 # MAGIC Spark Dataframe API를 써서 incremental read를 설정하고, 데이터에 대해서 쉽게 접근하기 위해서 temp view를 우선 생성했습니다. 
-# MAGIC 
+# MAGIC
 # MAGIC **NOTE**: For a JSON data source, Auto Loader will default to inferring each column as a string. Here, we demonstrate specifying the data type for the **`time`** column using the **`cloudFiles.schemaHints`** option. Note that specifying improper types for a field will result in null values.
 
 # COMMAND ----------
@@ -112,8 +111,8 @@ currentUser = spark.sql("SELECT current_user()").collect()[0][0]
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC The code below passes our enriched raw data back to PySpark API to process an incremental write to a Delta Lake table.
 
 # COMMAND ----------
@@ -129,8 +128,8 @@ currentUser = spark.sql("SELECT current_user()").collect()[0][0]
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC Trigger another file arrival with the following cell and you'll see the changes immediately detected by the streaming query you've written.
 
 # COMMAND ----------
@@ -145,8 +144,7 @@ DA.data_factory.load()
 
 # COMMAND ----------
 
-# MAGIC %python
-# MAGIC display(dbutils.fs.ls(f"/user/{currentUser}/dbacademy/dewd/7.1/source/tracker/"))
+display(dbutils.fs.ls(f"/user/{currentUser}/dbacademy/dewd/7.1/source/tracker/"))
 
 # COMMAND ----------
 
@@ -171,8 +169,8 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Silver Table: sensor recording 데이터 Enrich
 # MAGIC 두번째 단계에서 우리는 아래 enrichment작업들을 수행할 것입니다:
 # MAGIC - PII 데이터와 조인해서 환자 이름을 추가 
@@ -209,7 +207,7 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC 또 다른 파일을 추가해서 데이터들이 잘 전파되는지 확인해 보자. 
 
 # COMMAND ----------
@@ -229,10 +227,10 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Gold Table: 일평균 
-# MAGIC 
+# MAGIC
 # MAGIC 이제 Here we read a stream of data from **`recordings_enriched`** 테이블에서 데이터 스트림을 읽어서 각 환자별 일 평균 hear rate를 계산하는 aggregate golden 테이블을 만들자.
 
 # COMMAND ----------
@@ -252,14 +250,14 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
+# MAGIC
 # MAGIC 아래 코드의 **`.trigger(availableNow=True)`**  구문은 Structured Streaming 을 그대로 사용하면서도 micro batch 에서 모든 처리 가능한 데이터를 수행하기 위해 이 job을 1회성으로 수행하는 트리거링합니다. 
-# MAGIC 
+# MAGIC
 # MAGIC - end-to-end fault tolerant 프로세싱 
 # MAGIC - Upstream 데이터 소스에서의 변경을 자동 감지
-# MAGIC 
+# MAGIC
 # MAGIC 수집데이터의 대략적인 사이즈를 알고 있다면 위의 작업을 주기적으로 스케쥴해서 비용 효율적으로 incremental한 부분만 빠르게 처리할 수 있습니다. 
-# MAGIC 
+# MAGIC
 # MAGIC 또한 
 
 # COMMAND ----------
@@ -275,15 +273,15 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
+# MAGIC
 # MAGIC #### Important Considerations for complete Output with Delta
-# MAGIC 
+# MAGIC
 # MAGIC When using **`complete`** output mode, we rewrite the entire state of our table each time our logic runs. While this is ideal for calculating aggregates, we **cannot** read a stream from this directory, as Structured Streaming assumes data is only being appended in the upstream logic.
-# MAGIC 
+# MAGIC
 # MAGIC **NOTE**: Certain options can be set to change this behavior, but have other limitations attached. For more details, refer to <a href="https://docs.databricks.com/delta/delta-streaming.html#ignoring-updates-and-deletes" target="_blank">Delta Streaming: Ignoring Updates and Deletes</a>.
-# MAGIC 
+# MAGIC
 # MAGIC The gold Delta table we have just registered will perform a static read of the current state of the data each time we run the following query.
 
 # COMMAND ----------
@@ -301,8 +299,8 @@ DA.data_factory.load()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Process Remaining Records
 # MAGIC 아래 셀을 돌려서 2020년치 모든 파일을 한꺼번에 로드해 봅니다. 
 
@@ -318,10 +316,10 @@ DA.data_factory.load(continuous=True)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Wrapping Up
-# MAGIC 
+# MAGIC
 # MAGIC 마지막으로 모든 스트림이 멈췄는지 확인하고 데이터를 정리합니다
 
 # COMMAND ----------
@@ -331,19 +329,19 @@ DA.cleanup()
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Summary
-# MAGIC 
+# MAGIC
 # MAGIC Delta Lake 와  Structured Streaming 를 활용하면 lakehouse 에서 준실시간 분석을 손쉽게 구성할 수 있습니다.
 
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC 
-# MAGIC 
+# MAGIC
+# MAGIC
 # MAGIC ## Additional Topics & Resources
-# MAGIC 
+# MAGIC
 # MAGIC * <a href="https://docs.databricks.com/delta/delta-streaming.html" target="_blank">Table Streaming Reads and Writes</a>
 # MAGIC * <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank">Structured Streaming Programming Guide</a>
 # MAGIC * <a href="https://www.youtube.com/watch?v=rl8dIzTpxrI" target="_blank">A Deep Dive into Structured Streaming</a> by Tathagata Das. This is an excellent video describing how Structured Streaming works.
