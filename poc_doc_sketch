@@ -1,0 +1,35 @@
+
+KB PoC 목차 
+
+* PoC 개요
+    * PoC 아키텍처 
+        [그림] . ETL pipeline --> DBSQL --> PBAgent 
+    * ETL pipeline
+        . autoloader : 증분처리, replace 유형과 merge 유형(with 테이븗별 key)  
+        . 스케줄링 : batch, + file arrival trigger 설명   
+        . delta lake : ACID, time travel, LQ, deletion vector 
+        . (소구점) 빠른 개발, 쉬운 배포, 개발 리소스 절감 
+    * 데이터 거버넌스
+        . federated catalog to Postgres (스키마 확보에 사용)
+        . lineage : (그래프 스샷) volume -> silver --> gold (* 샘플 현업 쿼리 이용한 joined table. genie에도 사용 ) 
+        . table history, usage, quality monitoring (* 켜서 대시보드까지 생성 필요)
+        . 권한 설정 
+        . AI-assisted documentation
+        . (소구점) built-in 
+    * 데이터 서빙 w/ SQLWH
+        . WH 특성 (별도 ETL 없는 lakehouse 아키텍처, 대규모 처리용, latency)
+        . LakeBase 소개와 로드맵 
+        . WH 사이징 (비용에 맞춤), serverless 옵션 (금융권 사용 제약 안내) 
+        . BI 연동 w/ PowerBI
+        . AI/BI dashboard with Genie (고객 데이터로) 
+        . SQL tool 연동 : DBeaver
+        . (소구점) 대규모 데이터, historical 데이터, offloading 분기 
+    * AI 주요 기능
+        . (소구점) data to AI 매끄러운 연결. AI 도구와 플랫폼 제공 
+        . Genie (* 서빙 데이터로 데모). request review, benchmark, instruction, ...
+        . AI Gateway 
+        . Model serving (런치 일정 안내)
+        . Evaluation : human feedback UI, LLM judge, Guardrail
+        . AI functions
+    * AI 거버넌스
+        . Lakehouse monitoring (Reprise 데모)
