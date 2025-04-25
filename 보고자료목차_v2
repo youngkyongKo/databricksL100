@@ -1,0 +1,49 @@
+KB PoC 목차 
+
+* PB Agent PoC 개요
+    * PoC 아키텍처 (YK)
+        . [그림] ETL pipeline --> DBSQL --> PBAgent (받은 그림에 DBX 파트 추가)
+    * ETL pipeline  (Lina)
+        . (소구점) 빠른 개발, 쉬운 배포, 개발 리소스 절감 
+        . autoloader : 증분처리, replace 유형과 merge 유형(with 테이븗별 key)  
+        . delta lake : ACID, time travel, LQ, deletion vector 
+        . 스케줄링 
+        . (캡처) PBAgent workflow 실행 화면 
+        . (보충참고) Iceberg 지원 : Delta UniForm, UC Iceberg API 
+    * 데이터 거버넌스 (YK)
+        . (소구점) built-in 
+        . (캡처) federated catalog to Postgres (스키마 확보에 사용)
+        . (캡처) lineage : volume -> silver --> gold (* 샘플 현업 쿼리 이용한 joined table. genie에도 사용 ) 
+        . (캡처) table history, usage, quality monitoring (* 켜서 대시보드까지 생성 필요)
+        . (캡처) 권한 설정 
+        . (캡처) AI-assisted documentation
+    * 데이터 서빙 w/ SQLWH (YK)
+        . (소구점) 대규모 데이터, historical 데이터, offloading 분기 
+        . WH 특성 설명 (별도 ETL 없는 lakehouse 아키텍처, 대규모 처리용, latency)
+        . LakeBase 소개와 로드맵 
+        . (캡처) AI/BI dashboard with Genie (고객 데이터로) 
+        . (캡처) SQL tool 연동 : SQLAlchemy 
+        . (장표) BI 연동 w/ PowerBI
+        . (장표) DBeaver 연결 
+* Lakehouse PoC (JW)
+    * 성능 테스트 개요
+        . 설정 : Pro WH medium (비용에 맞춤)
+        . 테스트 쿼리 n 건   
+        . 측정 & 재현 방법 : workflow with SQL tasks, set use_cached_result = false 
+    * (캡처) 성능테스트 workflow 실행 화면 
+    * 측정 결과 표
+    * 상세 문서 링크 : 워드 포맷으로 별도 제공 
+        . 쿼리, 소요시간, 실행 화면 캡처, 코멘트 (eg. SQL 수정 등) 
+* 데이터브릭스 AI (YK, Lina, JP)
+    * AI 주요 기능
+        . (소구점) data to AI 매끄러운 연결. AI 도구와 플랫폼 제공 
+        . Genie (* 서빙 데이터로 데모). request review, benchmark, instruction, ...
+        . AI functions
+        . AI Apps (런치 일정 안내)
+        . AI Gateway (런치 일정 안내)
+        . Model serving (런치 일정 안내)
+        . Vector search (런치 일정 안내)
+        . Evaluation : human feedback UI, LLM judge, Guardrail
+    * AI 거버넌스
+        . Lakehouse monitoring (Reprise 데모)
+* 향후 활용 제안 (JP)
